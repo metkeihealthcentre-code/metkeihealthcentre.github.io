@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metkei Community Health Centre</title>
+    <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            line-height: 1.5;
+            color: #333;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            padding: 10px 0;
+        }
+
+        /* Top Brand Header Banner */
+        .main-brand-header {
+            background-color: #ffffff;
+            text-align: center;
+            padding: 15px 10px 5px 10px;
+        }
+        .main-brand-header h1 {
+            color: #1e7e34;
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        /* Navigation Bar */
+        header {
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid #28a745;
+        }
+        header .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px 0;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #0056b3;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        nav ul li a:hover, nav ul li a.active {
+            color: #ffffff;
+            background-color: #28a745;
+        }
+
+        /* Tab Visibility Control Engine */
+        .tab-content {
+            display: none;
+            flex: 1;
+        }
+        .tab-content.active-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Hero / Dynamic Image Slider Section */
+        .hero {
+            background: #f4f9f4;
+            text-align: center;
+        }
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
+            height: 50vh;
+            min-height: 500px;
+            overflow: hidden;
+            background: #e2eee2;
+        }
+        .slide-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+        .slide-img.visible-slide {
+            opacity: 1;
+        }
+        .hero-text {
+            padding: 25px 15px;
+            background: #28a745;
+            color: #ffffff;
+        }
+
+        /* Universal Section Padding Adjustments */
+        section {
+            padding: 25px 0;
+            flex: 1;
+        }
+
+        /* About Us Layout Frame */
+        .about-story {
+            max-width: 750px;
+            margin: 15px auto;
+            color: #444;
+            font-size: 16px;
+            padding: 0 15px;
+        }
+        .about-story p {
+            margin-bottom: 15px;
+        }
+        .partner-highlight-box {
+            background: #f4f9f4;
+            border-left: 4px solid #1e7e34;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 15px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        /* Partners Responsive Grid & Detail Cards */
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+        .partner-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .partner-card {
+            background: #ffffff;
+            border: 1px solid #e2eee2;
+            border-top: 4px solid #0056b3;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+            height: 100%;
+            transition: transform 0.2s;
+        }
+        .partner-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,86,179,0.15);
+        }
+        .partner-card h3 {
+            color: #1e7e34;
+            margin-bottom: 8px;
+            font-size: 18px;
+            text-decoration: underline;
+        }
+        .partner-detail-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px dashed #28a745;
+        }
+        .detail-card {
+            background: #ffffff;
+            border: 1px solid #e2eee2;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            scroll-margin-top: 80px;
+        }
+        .detail-card h4 {
+            color: #0056b3;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        /* Services Responsive Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .service-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(40, 167, 69, 0.08);
+            border-top: 4px solid #28a745;
+            border-left: 1px solid #e2eee2;
+            border-right: 1px solid #e2eee2;
+            border-bottom: 1px solid #e2eee2;
+        }
+        .service-card h3 {
+            margin-bottom: 10px;
+            color: #0056b3;
+            font-size: 18px;
+        }
+
+        /* Compact Membership Form Styles */
+        .form-container {
+            background: #ffffff;
+            max-width: 500px;
+            margin: 15px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+            border: 1px solid #e2eee2;
+            width: 100%;
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: bold;
+            color: #1e7e34;
+            font-size: 14px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #28a745;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .btn {
+            background: #28a745;
+            color: #ffffff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 5px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        /* Contact Details Frame */
+        .contact-info {
+            text-align: center;
+            max-width: 450px;
+            margin: 20px auto;
+            background: #f4f9f4;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #0056b3;
+            width: 100%;
+        }
+        .contact-info a {
+            color: #0056b3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* Compact Footer */
+        footer {
+            background: #1e7e34;
+            color: #ffffff;
+            text-align: center;
+            padding: 8px 0;
+            margin-top: auto;
+            font-size: 14px;
+        }
+
+        /* Mobile Responsiveness Layout Settings */
+        @media (max-width: 768px) {
+            .main-brand-header h1 {
+                font-size: 24px;
+            }
+            nav ul {
+                gap: 5px;
+            }
+            nav ul li a {
+                font-size: 13px;
+                padding: 4px 8px;
+            }
+            .slider-wrapper {
+                height: 40vh;
+            }
+            .hero-text h2 {
+                font-size: 22px;
+            }
+            .about-story {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Top Brand Header Banner -->
+    <div class="main-brand-header">
+        <h1>Metkei Community Health Centre</h1>
+    </div>
+
+    <!-- 2. Mobile-Friendly Sticky Navigation Bar -->
+    <header>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a onclick="switchTab('home')" id="nav-home" class="active">Home</a></li>
+                    <li><a onclick="switchTab('about')" id="nav-about">About Us</a></li>
+                    <li><a onclick="switchTab('partners')" id="nav-partners">Our Partners</a></li>
+                    <li><a onclick="switchTab('services')" id="nav-services">Our Services</a></li>
+                    <li><a onclick="switchTab('recruitment')" id="nav-recruitment">Become a Member</a></li>
+                    <li><a onclick="switchTab('contact')" id="nav-contact">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 3. Dynamic Tab Space -->
+    
+    <!-- HOME SECTION -->
+    <div id="section-home" class="tab-content hero active-section">
+        <div class="slider-wrapper">
+            <img src="medicalcamp.jpg" alt="Outreach medical camps" class="slide-img visible-slide">
+            <img src="GD.jpg" alt="Medical shelter foundation" class="slide-img">
+            <img src="CHP.jpg" alt="New hospital infrastructure" class="slide-img">
+            <img src="BC_screen.jpg" alt="Future health developments" class="slide-img">
+        </div>
+        <div class="hero-text">
+            <div class="container">
+                <h2 style="font-size: 26px;">Owned by the Community, Driven by Care</h2>
+                <p style="margin-top: 5px; color: #ffffff; font-size: 14px;">Providing official stakes to community members and quality health services to Metkei.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT US SECTION -->
+    <section id="section-about" class="tab-content">
+        <div class="container">
+            <div class="about-story">
+                <p>Our journey began back in <strong>2015</strong> as a critical medical outreach initiative, returning annually to run <strong>free medical camps</strong> and provide treatment relief directly to the local community. This regular outreach continued faithfully until the arrival of COVID-19 in <strong>2021</strong>, when necessary bans on public gatherings disrupted our mobile service style.</p>
+                
+                <p>Rather than stopping, this challenge highlighted a deeper need: a permanent shelter and treatment foundation for identified patients. To fulfill this vision, <strong>German Doctors</strong> stepped forward to support our community, purchasing dedicated land and financing the construction of a permanent facility layout.</p>
+                
+                <div class="partner-highlight-box">
+                    <strong>About Our Partner (German Doctors):</strong> Founded in 1983, German Doctors sends medical professionals on voluntary six-week missions to medically underserved areas globally—primarily across Kenya, India, Bangladesh, Sierra Leone, and the Philippines. Operating in severe poverty areas, refugee camps, and civil rescue environments, they provide critical basic medical care and train local healthcare personnel. To date, over 3,500 doctors have executed roughly 7,700 missions, generating over 13 million patient contacts worldwide.
+                </div>
+
+                <p>Construction moved forward seamlessly, culminating in the completion of our modern hospital framework by <strong>January 2025</strong>. Today, Metkei Community Health Centre is fully operational—built for the community, run by the community, and managed locally by our dedicated directors, continuing our core tradition of targeted local outreach.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- OUR PARTNERS SECTION (Set to Active Default) -->
+    <section id="section-partners" class="tab-content" style="background-color: #f9f9f9;">
+        <div class="container">
+            <!-- Grid of Partners -->
+            <div class="partners-grid">
+                <a href="#ampath-details" class="partner-card-link">
+                    <div class="partner-card">
+                        <h3>AMPATH</h3>
+                        <p>Provides crucial technical support, management expertise for chronic conditions, and ensures consistent drug access via a specialized revolving funds pharmacy model.</p>
+                    </div>
+                </a>
+                <a href="#german-doctors-details" class="partner-card-link">
+                    <div class="partner-card">
+                        <h3>German Doctors</h3>
+                        <p>Funded our structural baseline mission from the ground up, purchasing the physical land plot and funding construction for our clinic layout framework.</p>
+                    </div>
+                </a>
+                <a href="#ucsf-details" class="partner-card-link">
+                    <div class="partner-card" style="border-top-color: #28a745;">
+                        <h3>UCSF</h3>
+                        <p>University of California, San Francisco—a top public research institution entirely dedicated to advanced health science and global life science innovation.</p>
+                    </div>
+                </a>
+                <a href="#county-details" class="partner-card-link">
+                    <div class="partner-card">
+                        <h3>County Government</h3>
+                        <p>The County Department of Health coordinates essential policy leadership, vaccines, clinical equipment tools, and medical mentorship.</p>
+                    </div>
+                </a>
+                <a href="#community-details" class="partner-card-link">
+                    <div class="partner-card">
+                        <h3>The Community</h3>
+                        <p>Local community members drive our governing leadership structure while actively utilizing our treatment services, ensuring lasting grassroots ownership.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Detailed Target Sections -->
+            <div class="partner-detail-section">
+                <div id="ampath-details" class="detail-card">
+                    <h4>AMPATH</h4>
+                    <p>AMPATH works closely with our health centre to provide management expertise for chronic health conditions including HIV, Hypertension, and Diabetes. Their revolving pharmacy system guarantees that essential medications remain continually stocked and accessible to our community patients.</p>
+                </div>
+
+                <div id="german-doctors-details" class="detail-card">
+                    <h4>German Doctors</h4>
+                    <p>German Doctors funded our structural baseline project from the ground up, purchasing the physical land plot and funding the construction of our main Outpatient Department (OPD) clinic rooms, paving the way for our transition into a permanent treatment center.</p>
+                </div>
+
+                <div id="ucsf-details" class="detail-card">
+                    <h4>University of California, San Francisco (UCSF)</h4>
+                    <p>The University of California, San Francisco is a prestigious public land-grant research university dedicated entirely to health science and life science. Founded as Toland Medical College in 1864 and affiliated with the University of California system since 1873, UCSF stands as a powerhouse of medical exploration. In 2021, the institution spent $1.71 billion in advanced research and development, receiving the second-highest research funding allocation from the National Institutes of Health (NIH). UCSF's elite medical faculty have treated patients and trained healthcare residents for over a century, enriching our community medical programs with global healthcare research depth.</p>
+                </div>
+
+                <div id="county-details" class="detail-card">
+                    <h4>County Government</h4>
+                    <p>The County Department of Health delivers coordinating policy leadership and healthcare guidance while supplying our institution with vital diagnostic tools, child health vaccines, electronic tracking systems, and routine clinical oversight.</p>
+                </div>
+
+                <div id="community-details" class="detail-card">
+                    <h4>The Community</h4>
+                    <p>Metkei residents constitute the true owners and foundational pillars of our center. The community directly votes for and supplies members of our Governing Board of Directors, keeping local needs at the absolute core of our daily operations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OUR SERVICES SECTION -->
+    <section id="section-services" class="tab-content" style="background-color: #f4f9f4;">
+        <div class="container">
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Primary Medical Care</h3>
+                    <p>General Outpatients services, full-service pharmacy dispensing, and laboratory diagnostics.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Maternal & Child Health</h3>
+                    <p>Comprehensive Antenatal Care (ANC) for pregnant mothers, safe Maternity services, and routine infant immunization.</p>
+                </div>
+                <div class="service-card">
+                    <h3>HIV & Care Programs</h3>
+                    <p>Prevention of Mother-to-Child Transmission (PMTCT) services and dedicated drug dispensing for HIV-positive patients.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Specialized & Community Care</h3>
+                    <p>Point-of-Care Ultrasound diagnostics and active community health outreach via Community Health Promoter (CHPs) services.</p>
+                </div>
+                <div class="service-card" style="border-top-color: #0056b3;">
+                    <h3 style="color: #28a745;">Free Medical Camps</h3>
+                    <p>Organizing strategic, zero-cost medical outreach camps to deliver specialized checkups, screening, and diagnostic relief directly to community doorsteps.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BECOME A MEMBER SECTION -->
+    <section id="section-recruitment" class="tab-content">
+        <div class="container">
+            <div class="form-container">
+                <form action="#" method="POST">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="id-number">National ID / Passport Number</label>
+                        <input type="text" id="id-number" name="id-number" required placeholder="12345678">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="e.g., 0712345678">
+                    </div>
+                    <div class="form-group">
+                        <label for="member-type">Membership Category</label>
+                        <select id="member-type" name="member-type">
+                            <option value="community">Community Member</option>
+                            <option value="director">Director / Board Aspirant</option>
+                            <option value="donor">Partner Liaison</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Submit Application</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT US SECTION -->
+    <section id="section-contact" class="tab-content">
+        <div class="container">
+            <div class="contact-info">
+                <p style="margin: 3px 0;"><strong>Location:</strong> Metkei, Kenya</p>
+                <p style="margin: 6px 0;"><strong>Email:</strong> <a href="mailto:metkeihealthcentre@gmail.com">metkeihealthcentre@gmail.com</a></p>
+                <p style="margin: 6px 0; color: #0056b3;"><strong>Phone:</strong> [Phone Number Placeholder]</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Metkei Community Health Centre. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Tab View Execution & Slider Rotator Logic -->
+    <script>
+        function switchTab(sectionId) {
+            const sections = document.querySelectorAll('.tab-content');
+            sections.forEach(sec => {
+                sec.classList.remove('active-section');
+            });
+
+            const navLinks = document.querySelectorAll('nav ul li a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            document.getElementById('section-' + sectionId).classList.add('active-section');
+            document.getElementById('nav-' + sectionId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // Automatic fading background slider machine
+        let currentSlideIndex = 0;
+        const hospitalSlides = document.querySelectorAll('.slide-img');
+        
+        function autoRotateSlides() {
+            hospitalSlides[currentSlideIndex].classList.remove('visible-slide');
+            currentSlideIndex = (currentSlideIndex + 1) % hospitalSlides.length;
+            hospitalSlides[currentSlideIndex].classList.add('visible-slide');
+        }
+        
+        // Rotates to the next image automatically every 4 seconds
+        setInterval(autoRotateSlides, 4000);
+    </script>
+</body>
+</html>
